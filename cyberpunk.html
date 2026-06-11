@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI BIZNES WOLNOŚĆ — Cyberpunk Version</title>
+<meta name="description" content="Ostatni reset zasad gry cywilizacji. Zobacz na żywo, jak sztuczna inteligencja przejmuje 80% zadań, uwalniając Twój czas.">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ===== RETRO-CYBERPUNK DESIGN SYSTEM ===== */
+  :root {
+    --u-bg: #05050a;
+    --u-bg-card: rgba(10, 10, 20, 0.85);
+    --u-bg-paper: rgba(18, 10, 32, 0.7);
+    --u-ink: #00ffcc;
+    --u-muted: #8c9cb3;
+    --u-accent: #ff007f;       /* Neon Pink */
+    --u-accent-glow: rgba(255, 0, 127, 0.4);
+    --u-accent2: #9d00ff;      /* Purple */
+    --u-accent2-glow: rgba(157, 0, 255, 0.35);
+    --u-teal: #00f0ff;         /* Cyber Cyan */
+    --u-teal-glow: rgba(0, 240, 255, 0.3);
+    --u-line: rgba(255, 0, 127, 0.25);
+    --u-radius: 4px;           /* Cyber theme uses sharp edges */
+    --u-radius-sm: 2px;
+    --u-maxw: 840px;
+    --u-shadow: 0 0 25px rgba(255, 0, 127, 0.15), 0 0 45px rgba(0, 240, 255, 0.05);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--u-bg);
+    color: #fff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  * { box-sizing: border-box; }
+  .u-wrap { max-width: var(--u-maxw); margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3, h4 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  }
+
+  /* Cyber Grid Line Animation */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 10, 36, 0) 50%, rgba(255, 0, 127, 0.04) 50%),
+                linear-gradient(90deg, rgba(18, 10, 36, 0) 50%, rgba(0, 240, 255, 0.03) 50%);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===== BUTTONS ===== */
+  .u-btn-wow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 460px;
+    min-height: 60px;
+    padding: 18px 36px;
+    border-radius: var(--u-radius);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #fff;
+    background: transparent;
+    border: 2px solid var(--u-accent);
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--u-accent-glow);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    clip-path: polygon(0 0, 95% 0, 100% 30%, 100% 100%, 8% 100%, 0 70%);
+  }
+
+  .u-btn-wow::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--u-accent) 0%, var(--u-accent2) 100%);
+    opacity: 0.15;
+    transition: opacity 0.2s;
+    z-index: -1;
+  }
+
+  .u-btn-wow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.8), 0 0 10px rgba(0, 240, 255, 0.4);
+    border-color: var(--u-teal);
+    text-shadow: 0 0 8px #fff;
+  }
+
+  .u-btn-wow:hover::before {
+    opacity: 0.4;
+  }
+
+  .u-btn-wow.gold {
+    border-color: var(--u-teal);
+    box-shadow: 0 0 15px var(--u-teal-glow);
+  }
+
+  .u-btn-wow.gold::before {
+    background: linear-gradient(135deg, var(--u-teal) 0%, var(--u-accent2) 100%);
+  }
+
+  .u-btn-zone-solo { text-align: center; padding: 30px 24px; position: relative; z-index: 10; }
+
+  /* ===== STICKY HEADER ===== */
+  .u-sticky-header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    background: rgba(5, 5, 10, 0.95);
+    border-bottom: 2px solid var(--u-accent);
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.25);
+    z-index: 999;
+    padding: 12px 24px;
+    transform: translateY(-100%);
+    transition: transform 0.3s;
+  }
+
+  .u-sticky-header.u-visible { transform: translateY(0); }
+  .u-sticky-wrap { max-width: var(--u-maxw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .u-sticky-logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 0.95rem; color: var(--u-teal); text-shadow: 0 0 5px var(--u-teal); display: flex; align-items: center; gap: 8px; }
+  .u-sticky-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--u-accent); box-shadow: 0 0 8px var(--u-accent); animation: u-pulse-glow 1.4s infinite; }
+  .u-sticky-info { font-size: 0.88rem; color: #fff; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .u-sticky-live { color: var(--u-accent); font-weight: 800; animation: u-flash-dot 1s infinite alternate; }
+  .u-sticky-timer { font-family: 'Courier New', Courier, monospace; color: var(--u-teal); font-size: 0.95rem; font-weight: 900; }
+
+  /* ===== HERO SECTION ===== */
+  .u-hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(120% 100% at 50% 0%, #150a26 0%, #05050a 80%);
+    padding: 120px 0 50px;
+    text-align: center;
+    border-bottom: 2px solid var(--u-accent);
+  }
+
+  .u-hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.35; z-index: 1; }
+  .u-hero-content { position: relative; z-index: 2; }
+  .u-wordmark { font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 0.3em; font-size: 0.95rem; color: var(--u-accent); margin-bottom: 24px; text-shadow: 0 0 10px var(--u-accent-glow); }
+  .u-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 240, 255, 0.1); color: #fff; border: 1px solid var(--u-teal); padding: 8px 20px; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.06em; margin-bottom: 28px; }
+  .u-blink { width: 9px; height: 9px; border-radius: 50%; background: var(--u-teal); display: inline-block; animation: u-pulse-glow 1.5s infinite; }
+
+  /* Glitch Text heading */
+  .u-glitch-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin: 0 auto 24px;
+    max-width: 820px;
+    position: relative;
+  }
+
+  .u-rotator-container { display: inline-flex; flex-direction: column; height: 1.25em; overflow: hidden; vertical-align: bottom; position: relative; text-align: left; }
+  .u-rotator-item { color: var(--u-teal); display: block; white-space: nowrap; animation: u-rotate-word 9s cubic-bezier(0.76, 0, 0.24, 1) infinite; text-shadow: 0 0 10px var(--u-teal-glow); }
+  .u-hero .u-sub { font-size: 1.15rem; color: var(--u-muted); max-width: 720px; margin: 0 auto 36px; line-height: 1.6; }
+
+  .u-when { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 12px 20px; color: #fff; font-weight: 700; margin-bottom: 8px; font-size: 1.05rem; }
+  .u-when span { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 0, 127, 0.05); border: 1px solid var(--u-line); padding: 10px 18px; border-radius: var(--u-radius); }
+  .u-when span:hover { border-color: var(--u-teal); }
+  .u-hosts { color: var(--u-muted); font-size: 1rem; margin: 18px 0 32px; }
+  .u-hosts b { color: var(--u-teal); }
+
+  /* Countdown */
+  .u-countdown { display: flex; justify-content: center; gap: 12px; margin: 24px 0 20px; }
+  .u-cd-box { background: rgba(10, 10, 20, 0.9); border: 1px solid var(--u-line); padding: 16px 14px; min-width: 82px; box-shadow: 0 0 15px rgba(255, 0, 127, 0.1); }
+  .u-cd-num { font-size: 2.1rem; font-weight: 900; color: var(--u-accent); line-height: 1; text-shadow: 0 0 8px var(--u-accent-glow); font-family: 'Orbitron', sans-serif; }
+  .u-cd-lab { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--u-muted); margin-top: 6px; }
+
+  .u-live-viewers { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 999px; padding: 8px 18px; font-size: 0.9rem; color: #e5e7eb; margin: 0 auto 28px; }
+  .u-live-dot { width: 8px; height: 8px; background-color: var(--u-teal); border-radius: 50%; box-shadow: 0 0 10px var(--u-teal); animation: u-ping-dot 1.5s infinite; }
+
+  /* Video wrapper */
+  .u-video-wrapper {
+    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+    border-radius: var(--u-radius); box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+    border: 2px solid var(--u-teal); background: #000; margin: 36px 0 44px;
+  }
+  .u-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+  /* APETYCZNA STREFA ZAPISU */
+  .u-action-zone-top { max-width: 600px; margin: 0 auto; padding: 10px 20px 0; text-align: center; position: relative; z-index: 5; }
+  .u-pulse-arrow { font-size: 2.5rem; line-height: 1; color: var(--u-accent); text-shadow: 0 0 12px var(--u-accent-glow); animation: u-bounce-arrow 1.6s infinite; margin-bottom: 14px; }
+  .u-action-title { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 900; color: #fff; letter-spacing: 1px; margin-bottom: 8px; text-shadow: 0 0 5px var(--u-accent-glow); }
+  .u-action-sub { font-size: 0.95rem; color: var(--u-muted); margin-bottom: 18px; }
+  .u-limit-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 0, 127, 0.1); border: 2px solid var(--u-accent); padding: 12px 28px; font-size: 1.05rem; color: #fff; font-weight: 800; animation: u-badge-pulse-orange 2.5s infinite ease-in-out; }
+  .u-limit-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--u-accent); box-shadow: 0 0 6px var(--u-accent); animation: u-ping-dot 1.2s infinite; }
+
+  /* ===== SECTION SYSTEM ===== */
+  .u-sec { padding: 75px 0; border-bottom: 1px solid var(--u-line); position: relative; z-index: 2; }
+  .u-sec-dark { background: #07070f; }
+  h2 { font-size: 2.2rem; font-weight: 900; margin: 0 0 16px; color: #fff; text-align: center; line-height: 1.2; }
+  h2 .u-mark { color: var(--u-teal); text-shadow: 0 0 10px var(--u-teal-glow); }
+  .u-lead { font-size: 1.15rem; color: var(--u-muted); text-align: center; max-width: 700px; margin: 0 auto 40px; }
+
+  /* Scroll Reveal */
+  .u-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .u-reveal.u-visible { opacity: 1; transform: translateY(0); }
+  .u-delay-1 { transition-delay: 0.15s; }
+  .u-delay-2 { transition-delay: 0.3s; }
+
+  /* Session Timer */
+  .u-action-under-top { max-width: 600px; margin: 15px auto 45px; text-align: center; padding: 0 20px; }
+  .u-session-timer-wrap { display: block; margin: 0 auto; max-width: 520px; padding: 0; }
+  .u-session-timer-text { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .u-timer-icon { display: inline-block; font-size: 1.5rem; animation: u-clock-pulse 1s infinite alternate; }
+  .u-timer-digits { font-family: 'Courier New', Courier, monospace; font-size: 1.95rem; font-weight: 900; color: var(--u-accent); text-shadow: 0 0 15px var(--u-accent-glow); letter-spacing: 1.5px; }
+  .u-timer-progress-bg { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.05); overflow: hidden; position: relative; border: 1px solid var(--u-line); }
+  .u-timer-progress-bar { height: 100%; width: 100%; background: linear-gradient(90deg, var(--u-accent), var(--u-teal), var(--u-accent)); background-size: 200% auto; box-shadow: 0 0 12px var(--u-accent-glow); transition: width 1s linear; animation: u-bar-flow 2s linear infinite; }
+  .u-security-micro { font-size: 0.82rem; color: var(--u-muted); margin-top: 14px; }
+
+  /* ===== INTERACTIVE CALCULATOR ===== */
+  .u-calc-box {
+    background: var(--u-bg-card); border: 2px solid var(--u-line);
+    padding: 40px 36px; box-shadow: var(--u-shadow); margin: 30px 0;
+    transition: all 0.4s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    clip-path: polygon(0 0, 97% 0, 100% 3%, 100% 100%, 3% 100%, 0 97%);
+  }
+  .u-calc-box:hover { border-color: var(--u-teal); box-shadow: 0 0 35px rgba(0, 240, 255, 0.15); }
+  .u-calc-title { font-family: 'Orbitron', sans-serif; font-size: 1.45rem; font-weight: 900; text-align: center; margin-bottom: 28px; color: var(--u-teal); text-shadow: 0 0 5px var(--u-teal-glow); }
+  .u-calc-row { margin-bottom: 28px; }
+  .u-calc-row label { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.98rem; margin-bottom: 10px; color: #fff; }
+  .u-calc-row label span.u-val { color: var(--u-accent); font-weight: 900; font-size: 1.1rem; text-shadow: 0 0 8px var(--u-accent-glow); }
+  .u-calc-slider { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; background: rgba(255,255,255,0.05); outline: none; border: 1px solid var(--u-line); cursor: pointer; }
+  .u-calc-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; background: var(--u-accent); cursor: pointer; border: 1px solid #fff; box-shadow: 0 0 10px var(--u-accent-glow); transition: transform 0.2s; }
+  .u-calc-slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: var(--u-teal); box-shadow: 0 0 10px var(--u-teal-glow); }
+  .u-calc-slider::-moz-range-thumb { width: 24px; height: 24px; background: var(--u-accent); cursor: pointer; border: 1px solid #fff; box-shadow: 0 0 10px var(--u-accent-glow); transition: transform 0.2s; }
+  .u-calc-slider::-moz-range-thumb:hover { transform: scale(1.2); background: var(--u-teal); }
+  
+  .u-calc-result { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--u-line); }
+  .u-calc-res-card { background: rgba(255, 255, 255, 0.01); border: 1px solid var(--u-line); padding: 20px; text-align: center; }
+  .u-calc-res-label { font-size: 0.82rem; text-transform: uppercase; color: var(--u-muted); letter-spacing: 0.5px; font-weight: 600; }
+  .u-calc-res-value { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #fff; margin-top: 8px; }
+  .u-calc-res-value.u-green { color: var(--u-teal); text-shadow: 0 0 15px var(--u-teal-glow); }
+  .u-pulse-num { animation: u-digit-pulse 0.15s ease-out; }
+
+  /* ===== 3 BRUTAL PRAWDY ===== */
+  .u-truth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 36px 0 40px; }
+  .u-truth-card { background: var(--u-bg-card); border: 2px solid #ef4444; padding: 30px 24px; text-align: center; transition: all 0.25s; }
+  .u-truth-card:hover { transform: translateY(-8px); box-shadow: 0 0 25px rgba(239, 68, 68, 0.35); }
+  .u-truth-ico { font-size: 2.4rem; line-height: 1; margin-bottom: 16px; }
+  .u-truth-title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 900; color: #ef4444; margin-bottom: 10px; text-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+  .u-truth-desc { font-size: 0.95rem; color: var(--u-muted); margin: 0; }
+
+  /* ===== TIMELINE EPOCHS ===== */
+  .u-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 44px 0; }
+  .u-time-card { background: var(--u-bg-card); border: 1.5px solid var(--u-line); padding: 28px 22px; text-align: center; position: relative; transition: all 0.25s; }
+  .u-time-card:hover { transform: translateY(-6px); border-color: var(--u-teal); box-shadow: 0 0 20px var(--u-teal-glow); }
+  .u-time-year { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--u-teal); margin-bottom: 10px; text-shadow: 0 0 8px var(--u-teal-glow); }
+  .u-time-title { font-family: 'Orbitron', sans-serif; font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+  .u-time-desc { font-size: 0.9rem; color: var(--u-muted); margin: 0; }
+  .u-time-active { border-color: var(--u-accent); box-shadow: 0 0 15px var(--u-accent-glow); }
+  .u-time-active:hover { border-color: var(--u-teal); box-shadow: 0 0 20px var(--u-teal-glow); }
+  .u-time-badge { position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: var(--u-accent); color: #fff; padding: 4px 14px; font-size: 0.72rem; font-weight: 900; box-shadow: 0 0 8px var(--u-accent-glow); }
+  .u-comp-badge { position: absolute; top: 15px; right: 15px; background: var(--u-teal); color: #000; padding: 4px 12px; font-size: 0.72rem; font-weight: 900; transform: rotate(5deg); box-shadow: 0 0 8px var(--u-teal-glow); z-index: 2; }
+
+  /* ===== CONTRAST CARDS ===== */
+  .u-comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 36px; }
+  .u-comp-card { padding: 38px 30px; border: 2px solid var(--u-line); position: relative; overflow: hidden; transition: transform 0.2s; }
+  .u-comp-card:hover { transform: scale(1.01); }
+  .u-comp-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; }
+  .u-comp-without { background: rgba(255, 255, 255, 0.01); border-color: #374151; }
+  .u-comp-without::before { background: #4b5563; }
+  .u-comp-with { background: rgba(0, 240, 255, 0.01); border-color: var(--u-teal); box-shadow: 0 0 25px rgba(0, 240, 255, 0.05); }
+  .u-comp-with::before { background: linear-gradient(90deg, var(--u-teal), var(--u-accent2)); }
+  .u-comp-title { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; margin-bottom: 26px; text-align: center; }
+  .u-comp-without .u-comp-title { color: #6b7280; }
+  .u-comp-with .u-comp-title { color: var(--u-teal); text-shadow: 0 0 5px var(--u-teal-glow); }
+  .u-comp-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; font-size: 1rem; transition: transform 0.2s; }
+  .u-comp-item:hover { transform: translateX(4px); }
+  .u-comp-ico { font-size: 1.15rem; flex-shrink: 0; line-height: 1; }
+
+  /* Action Badge 2 */
+  .u-action-zone-mid { max-width: 600px; margin: 40px auto 0; padding: 0 20px; text-align: center; position: relative; z-index: 5; }
+  .u-limit-badge-mid { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 240, 255, 0.12); border: 2px solid var(--u-teal); padding: 12px 28px; font-size: 1.05rem; color: #fff; font-weight: 800; margin-top: 10px; box-shadow: 0 0 15px var(--u-teal-glow); animation: u-badge-pulse 2.5s infinite ease-in-out; }
+
+  /* ===== KONTENER 3: SYLABUS, TABS, FAQ ===== */
+  .u-sec-k3 { padding: 75px 0; border-bottom: 1px solid var(--u-line); position: relative; z-index: 2; }
+  .u-sec-k3-dark { background: #07070f; }
+  .u-action-footer-zone-k3 { max-width: 600px; margin: 10px auto 40px; text-align: center; font-size: 0.9rem; color: var(--u-muted); padding: 0 20px; }
+  .u-action-footer-zone-k3 span { display: inline-flex; align-items: center; gap: 6px; margin: 0 12px; }
+
+  /* Syllabus Tabs */
+  .u-tabs-header { display: flex; justify-content: center; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+  .u-tab-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--u-line); color: var(--u-muted); padding: 14px 22px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: all 0.25s ease; font-family: 'Orbitron', sans-serif; }
+  .u-tab-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+  .u-tab-btn.u-active { background: var(--u-accent); border-color: var(--u-accent); color: #fff; box-shadow: 0 0 15px var(--u-accent-glow); }
+
+  .u-tabs-content { background: var(--u-bg-card); border: 1px solid var(--u-line); padding: 36px 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .u-tab-panel { display: none; }
+  .u-tab-panel.u-active { display: block; animation: u-tab-fade 0.4s ease-out; }
+  .u-tab-panel h3 { font-size: 1.45rem; font-weight: 900; margin: 0 0 12px; color: #fff; display: flex; align-items: center; gap: 10px; }
+  .u-tab-panel p.u-panel-lead { color: var(--u-muted); font-size: 1.02rem; margin-bottom: 24px; }
+  .u-tab-list { list-style: none; padding: 0; margin: 0; }
+  .u-tab-list li { position: relative; padding: 12px 0 12px 30px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.98rem; color: var(--u-muted); transition: color 0.2s; }
+  .u-tab-list li:hover { color: #fff; }
+  .u-tab-list li:last-child { border-bottom: none; }
+  .u-tab-list li::before { content: "⚡"; position: absolute; left: 0; top: 12px; color: var(--u-teal); font-weight: 900; }
+
+  /* Pain & Qualify Lists */
+  .u-card { background: var(--u-bg-card); border: 1px solid var(--u-line); padding: 32px 28px; box-shadow: var(--u-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  ul.u-clean { list-style: none; margin: 0; padding: 0; }
+  ul.u-clean li { position: relative; padding: 16px 0 16px 42px; font-size: 1.05rem; border-bottom: 1px solid var(--u-line); color: #e5e7eb; transition: transform 0.2s; }
+  ul.u-clean li:hover { transform: translateX(4px); }
+  ul.u-clean li:last-child { border-bottom: none; }
+  ul.u-pain li::before { content: "👉"; position: absolute; left: 4px; top: 16px; font-size: 1.1rem; }
+  ul.u-qualify li::before { content: "✔"; position: absolute; left: 8px; top: 16px; color: var(--u-teal); font-weight: 900; font-size: 1.25rem; }
+
+  /* Bio & Host */
+  .u-host-wrap { display: flex; gap: 36px; align-items: flex-start; flex-wrap: wrap; }
+  .u-host-photo { flex: 0 0 190px; width: 190px; height: 220px; object-fit: cover; background: #1f2937; border: 2px solid var(--u-line); box-shadow: var(--u-shadow); transition: transform 0.3s ease; }
+  .u-host-photo:hover { transform: scale(1.03) rotate(1deg); }
+  .u-host-text { flex: 1; min-width: 280px; }
+  .u-host-text h3 { font-size: 1.65rem; font-weight: 900; margin-bottom: 6px; color: #fff; }
+  .u-host-text .u-role { color: var(--u-accent); font-weight: 800; font-size: 1.05rem; margin-bottom: 18px; }
+  .u-host-text ul { list-style: none; margin: 14px 0 0; padding: 0; }
+  .u-host-text ul li { padding: 8px 0 8px 24px; position: relative; color: #d1d5db; font-size: 0.98rem; }
+  .u-host-text ul li::before { content: "•"; position: absolute; left: 6px; color: var(--u-accent); font-weight: 900; font-size: 1.3rem; }
+
+  .u-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 28px; }
+  .u-gal-img { height: 170px; border-radius: 4px; object-fit: cover; width: 100%; border: 1px solid var(--u-line); transition: transform 0.3s, filter 0.3s; }
+  .u-gal-img:hover { transform: scale(1.04); filter: brightness(1.05); }
+
+  /* Testimonials */
+  .u-stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+  .u-stat-box { background: var(--u-bg-card); border: 1px solid var(--u-line); padding: 26px 14px; text-align: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .u-stat-box:hover { border-color: var(--u-accent); }
+  .u-stat-box .u-num { font-family: 'Orbitron', sans-serif; font-size: 2.1rem; font-weight: 900; color: var(--u-teal); line-height: 1.1; text-shadow: 0 0 5px var(--u-teal-glow); }
+  .u-stat-box .u-lab { font-size: 0.9rem; color: var(--u-muted); margin-top: 6px; line-height: 1.4; }
+
+  .u-quotes { display: grid; gap: 20px; }
+  .u-quote { background: var(--u-bg-card); border: 1px solid var(--u-line); border-left: 4px solid var(--u-accent); padding: 26px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .u-quote:hover { transform: scale(1.01); }
+  .u-quote .u-stars { color: var(--u-teal); font-size: 0.95rem; letter-spacing: 2px; margin-bottom: 10px; }
+  .u-quote p { color: #e5e7eb; font-style: italic; margin-bottom: 14px; font-size: 1.05rem; }
+  .u-quote .u-who { color: var(--u-muted); font-size: 0.95rem; font-weight: 700; }
+  .u-quote .u-who span { color: #6b7280; font-weight: 500; font-size: 0.88rem; margin-left: 6px; }
+
+  /* FAQ Accordion */
+  .u-faq details { border: 1px solid var(--u-line); padding: 0 24px; margin-bottom: 14px; background: var(--u-bg-card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .u-faq details:hover { border-color: var(--u-teal); }
+  .u-faq summary { cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.15rem; padding: 20px 0; list-style: none; position: relative; color: #fff; }
+  .u-faq summary::-webkit-details-marker { display: none; }
+  .u-faq summary::after { content: "+"; position: absolute; right: 0; color: var(--u-accent); font-weight: 900; font-size: 1.5rem; line-height: 1; }
+  .u-faq details[open] summary::after { content: "–"; }
+  .u-faq details p { color: var(--u-muted); padding: 0 0 20px; margin: 0; font-size: 1.02rem; }
+
+  .u-action-zone-bottom { max-width: 600px; margin: 40px auto 0; padding: 0 20px; text-align: center; position: relative; z-index: 5; }
+  .u-social-proof-small { display: inline-block; margin-top: 10px; font-size: 0.9rem; color: #fff; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.25); padding: 8px 18px; }
+
+  /* ===== INLINE FORM & FOOTER ===== */
+  .u-container-4 { position: relative; z-index: 10; }
+  .u-action-footer-zone-k4 { max-width: 600px; margin: 10px auto 45px; text-align: center; font-size: 0.9rem; color: var(--u-muted); padding: 0 20px; }
+  .u-action-footer-zone-k4 span { display: inline-flex; align-items: center; gap: 6px; margin: 0 12px; }
+
+  .u-inline-register-sec { padding: 65px 0; background: radial-gradient(100% 100% at 50% 100%, #150a26 0%, #05050a 100%); border-top: 2px solid var(--u-line); border-bottom: 2px solid var(--u-line); }
+
+  .u-footer-zone { background: #020205; color: var(--u-muted); text-align: center; padding: 60px 24px; font-size: 0.9rem; border-top: 1px solid var(--u-line); }
+  .u-footer-logo { font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; text-shadow: 0 0 5px var(--u-accent-glow); }
+  .u-footer-sub { color: var(--u-muted); font-style: italic; margin-bottom: 28px; }
+  .u-footer-links { margin-bottom: 24px; }
+  .u-footer-links a { color: var(--u-teal); text-decoration: none; margin: 0 14px; transition: color 0.2s; }
+  .u-footer-links a:hover { color: #fff; text-shadow: 0 0 5px var(--u-teal-glow); }
+  .u-copyright { font-size: 0.8rem; color: #4b5563; }
+
+  /* ===== PREMIUM GLASSMORPHIC REGISTRATION FORM ===== */
+  .u-form-premium {
+    background: rgba(10, 5, 20, 0.95); border: 2px solid var(--u-line);
+    padding: 40px 36px; width: 100%; max-width: 480px; margin: 0 auto;
+    box-shadow: var(--u-shadow); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    transition: all 0.3s; position: relative; overflow: hidden;
+    clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
+  }
+  .u-form-premium:hover { border-color: var(--u-teal); box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); }
+  .u-form-premium h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 8px; text-align: center; color: var(--u-teal); text-shadow: 0 0 5px var(--u-teal-glow); }
+  .u-form-premium .u-form-lead { text-align: center; color: var(--u-muted); font-size: 0.95rem; margin-bottom: 28px; }
+  
+  .u-fld-group { position: relative; margin-bottom: 24px; }
+  .u-fld-input { width: 100%; padding: 16px 18px; background: rgba(255, 255, 255, 0.02); border: 1.5px solid var(--u-line); color: #fff; outline: none; transition: all 0.3s ease; }
+  .u-fld-label { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--u-muted); pointer-events: none; transition: all 0.3s ease; font-weight: 500; }
+
+  .u-fld-input:focus ~ .u-fld-label,
+  .u-fld-input:not(:placeholder-shown) ~ .u-fld-label {
+    top: 0; font-size: 0.78rem; font-weight: 700; color: var(--u-teal); padding: 2px 6px; background: #0c0817; transform: translateY(-50%) scale(0.95); left: 12px;
+  }
+  .u-fld-input:focus { border-color: var(--u-teal); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
+
+  /* Custom Checkbox */
+  .u-consent-container { display: flex; gap: 12px; align-items: flex-start; font-size: 0.84rem; color: var(--u-muted); margin: 6px 0 24px; line-height: 1.45; cursor: pointer; }
+  .u-consent-checkbox { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+  .u-consent-custom-box { position: relative; height: 18px; width: 18px; background-color: rgba(255, 255, 255, 0.02); border: 1.5px solid var(--u-line); flex-shrink: 0; margin-top: 2px; }
+  .u-consent-container:hover .u-consent-custom-box { border-color: var(--u-teal); }
+  .u-consent-checkbox:checked ~ .u-consent-custom-box { background-color: var(--u-teal); border-color: var(--u-teal); }
+  .u-consent-custom-box::after { content: ""; position: absolute; display: none; left: 5px; top: 2px; width: 5px; height: 9px; border: solid #000; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .u-consent-checkbox:checked ~ .u-consent-custom-box::after { display: block; }
+  .u-consent-container a { color: var(--u-teal); text-decoration: none; font-weight: 600; }
+  .u-consent-container a:hover { text-decoration: underline; }
+
+  .u-form-error { display: none; color: #ef4444; font-weight: 700; font-size: 0.88rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 14px; margin-bottom: 20px; animation: u-shake 0.3s; }
+
+  .u-form-submit-state { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .u-form-loader { width: 20px; height: 20px; border: 3px solid rgba(255, 255, 255, 0.2); border-radius: 50%; border-top-color: #fff; animation: u-spin 0.8s linear infinite; }
+  
+  .u-form-success-screen { display: none; text-align: center; padding: 30px 10px; }
+  .u-success-circle { width: 80px; height: 80px; border-radius: 50%; background: rgba(0, 240, 255, 0.1); border: 3px solid var(--u-teal); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: u-scale-up 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .u-success-icon { font-size: 2.8rem; color: var(--u-teal); line-height: 1; text-shadow: 0 0 10px var(--u-teal-glow); }
+  .u-form-success-screen h3 { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 10px; }
+  .u-form-success-screen p { color: var(--u-muted); font-size: 1rem; margin: 0; }
+
+  /* ===== PORTAL / MODAL POPUP SYSTEM ===== */
+  .u-modal-portal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 10, 0.8); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .u-modal-portal.u-open { opacity: 1; pointer-events: all; }
+  .u-modal-card { width: 100%; max-width: 480px; transform: scale(0.92) translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15); }
+  .u-modal-portal.u-open .u-modal-card { transform: scale(1) translateY(0); }
+  
+  .u-modal-close-btn { position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--u-line); color: var(--u-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.25rem; font-weight: 800; transition: all 0.2s; z-index: 10; }
+  .u-modal-close-btn:hover { background: rgba(255, 0, 127, 0.2); color: #fff; }
+
+  /* ===== GLITCH ANIMATION KEYFRAMES ===== */
+  @keyframes u-glitch-anim {
+    0% { clip: rect(44px, 9999px, 56px, 0); }
+    10% { clip: rect(12px, 9999px, 85px, 0); }
+    20% { clip: rect(78px, 9999px, 11px, 0); }
+    30% { clip: rect(22px, 9999px, 98px, 0); }
+    40% { clip: rect(67px, 9999px, 54px, 0); }
+    50% { clip: rect(89px, 9999px, 14px, 0); }
+    60% { clip: rect(5px, 9999px, 73px, 0); }
+    70% { clip: rect(95px, 9999px, 32px, 0); }
+    80% { clip: rect(18px, 9999px, 60px, 0); }
+    90% { clip: rect(40px, 9999px, 91px, 0); }
+    100% { clip: rect(76px, 9999px, 47px, 0); }
+  }
+
+  /* Animations */
+  @keyframes u-pulse-glow {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px rgba(0, 240, 255, 0.6); }
+    50% { opacity: 0.3; transform: scale(0.85); box-shadow: 0 0 2px rgba(0, 240, 255, 0.2); }
+  }
+  @keyframes u-ping-dot {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.4; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes u-bounce-arrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+  @keyframes u-badge-pulse-orange {
+    0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 0, 127, 0.2); }
+    50% { transform: scale(1.04); box-shadow: 0 0 20px rgba(255, 0, 127, 0.5); border-color: var(--u-accent); }
+    100% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 0, 127, 0.2); }
+  }
+  @keyframes u-badge-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 5px rgba(0, 240, 255, 0.2); }
+    50% { transform: scale(1.04); box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); border-color: var(--u-teal); }
+    100% { transform: scale(1); box-shadow: 0 0 5px rgba(0, 240, 255, 0.2); }
+  }
+  @keyframes u-clock-pulse {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.12) rotate(10deg); }
+  }
+  @keyframes u-digit-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); color: var(--u-teal); }
+    100% { transform: scale(1); }
+  }
+  @keyframes u-rotate-word {
+    0%, 28% { transform: translateY(0%); }
+    33%, 61% { transform: translateY(-100%); }
+    66%, 94% { transform: translateY(-200%); }
+    100% { transform: translateY(0%); }
+  }
+  @keyframes u-shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  @keyframes u-spin { 100% { transform: rotate(360deg); } }
+  @keyframes u-scale-up { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes u-bar-flow { 0% { background-position: 0% 0%; } 100% { background-position: -200% 0%; } }
+  @keyframes u-flash-dot { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+  @keyframes u-shimmer { 0% { left: -150%; } 30% { left: 150%; } 100% { left: 150%; } }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .u-glitch-title { font-size: 1.9rem; }
+    .u-hero .u-sub { font-size: 1.1rem; }
+    .u-cd-box { min-width: 68px; padding: 12px 8px; }
+    .u-cd-num { font-size: 1.65rem; }
+    
+    .u-truth-grid { grid-template-columns: 1fr; gap: 16px; }
+    .u-timeline { grid-template-columns: 1fr; gap: 16px; }
+    .u-comp-grid { grid-template-columns: 1fr; gap: 20px; }
+    .u-calc-result { grid-template-columns: 1fr; gap: 12px; }
+    
+    .u-stats-bar { grid-template-columns: 1fr; gap: 12px; }
+    .u-gallery { grid-template-columns: 1fr; }
+    .u-host-wrap { gap: 20px; }
+    .u-host-photo { width: 100%; height: 260px; }
+
+    .u-sticky-info { display: none; }
+    .u-btn-wow { font-size: 16px; min-height: 56px; padding: 14px 28px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- STICKY TOP HEADER -->
+  <div class="u-sticky-header" id="u-sticky-header">
+    <div class="u-sticky-wrap">
+      <div class="u-sticky-logo">
+        <span class="u-sticky-dot"></span> AI BIZNES WOLNOŚĆ
+      </div>
+      <div class="u-sticky-info">
+        <span class="u-sticky-live">🔴 LIVE</span>
+        <span class="u-sticky-timer-text">Start za:</span>
+        <span class="u-sticky-timer" id="u-sticky-timer">0d 00h 00m 00s</span>
+      </div>
+      <a href="#" class="u-sticky-btn u-open-modal-trigger">ZAPISZ SIĘ TERAZ 🔥</a>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <div class="u-container-1">
+    <header class="u-hero">
+      <canvas class="u-hero-canvas" id="u-neural-net"></canvas>
+      
+      <div class="u-hero-content u-wrap">
+        <div class="u-wordmark">AI BIZNES WOLNOŚĆ</div>
+        <div class="u-eyebrow"><span class="u-blink"></span> DARMOWE SZKOLENIE LIVE ONLINE</div>
+
+        <h1 class="u-glitch-title">OSTATNI RESET ZASAD GRY:<br>Jak wykorzystać Sztuczną Inteligencję do 
+          <span class="u-rotator-container">
+            <span class="u-rotator-item">automatyzacji</span>
+            <span class="u-rotator-item">drugiej pensji</span>
+            <span class="u-rotator-item">wolności finansowej</span>
+          </span>
+        </h1>
+
+        <p class="u-sub">Rewolucja, która zmienia świat, dzieje się TERAZ. Zobacz na żywo, jak darmowe narzędzia AI przejmują 80% powtarzalnych zadań, uwalniając Twój czas i otwierając nowe, pasywne strumienie dochodów.</p>
+
+        <div class="u-when">
+          <span id="u-webinar-date">Ładowanie terminu...</span>
+          <span>💻 ONLINE / LIVE</span>
+        </div>
+        <div class="u-hosts">Prowadzi: <b>Krzysztof Król</b></div>
+
+        <!-- Countdown -->
+        <div class="u-countdown" id="u-countdown" aria-label="Odliczanie do startu szkolenia">
+          <div class="u-cd-box"><div class="u-cd-num" id="u-cd-d">--</div><div class="u-cd-lab">dni</div></div>
+          <div class="u-cd-box"><div class="u-cd-num" id="u-cd-h">--</div><div class="u-cd-lab">godz.</div></div>
+          <div class="u-cd-box"><div class="u-cd-num" id="u-cd-m">--</div><div class="u-cd-lab">min.</div></div>
+          <div class="u-cd-box"><div class="u-cd-num" id="u-cd-s">--</div><div class="u-cd-lab">sek.</div></div>
+        </div>
+
+        <!-- Live viewers -->
+        <div class="u-live-viewers">
+          <span class="u-live-dot"></span>
+          <span class="u-live-text">Ogląda teraz tę stronę: <b id="u-live-count">247</b> osób</span>
+        </div>
+
+        <!-- Video embed -->
+        <div class="u-video-wrapper">
+          <iframe src="https://www.youtube.com/embed/ljCUsyXjcAQ?rel=0&modestbranding=1" 
+                  title="Wideo wprowadzające Krzysztofa Króla"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+          </iframe>
+        </div>
+
+        <!-- Action Indicator -->
+        <div class="u-action-zone-top">
+          <div class="u-pulse-arrow">👇</div>
+          <div class="u-action-title">Zarezerwuj darmowe miejsce poniżej</div>
+          <div class="u-action-sub">Kliknij przycisk, aby natychmiast zarejestrować się online</div>
+          <div class="u-limit-badge">
+            <span class="u-limit-dot"></span> Zostało tylko <b id="u-limit-count-1">42</b> wolnych miejsc w tej grupie
+          </div>
+        </div>
+
+      </div>
+    </header>
+  </div>
+
+  <!-- MAIN REGISTRATION BUTTON #1 -->
+  <div class="u-btn-zone-solo">
+    <button class="u-btn-wow u-open-modal-trigger">ZAPISZ SIĘ NA WEBINAR — ZA DARMO 🔥</button>
+  </div>
+
+  <!-- MIDDLE ZONE -->
+  <div class="u-container-2">
+    <!-- Dynamic Timer under Button 1 -->
+    <div class="u-action-under-top">
+      <div class="u-session-timer-wrap">
+        <div class="u-session-timer-text">
+          <span class="u-timer-icon">⏳</span> 
+          Rezerwacja bezpłatnego miejsca wygasa za: 
+          <span class="u-timer-digits" id="u-timer-under-btn">14:59</span>
+        </div>
+        <div class="u-timer-progress-bg">
+          <div class="u-timer-progress-bar" id="u-timer-progress-bar"></div>
+        </div>
+      </div>
+      <div class="u-security-micro">
+        🔒 Bezpieczne połączenie SSL • 🛡️ Zgodność z RODO • 🎁 Bonus PDF w mailu
+      </div>
+    </div>
+
+    <!-- CALCULATOR -->
+    <section class="u-sec u-reveal">
+      <div class="u-wrap">
+        <h2>Oblicz swój potencjał oszczędności z AI</h2>
+        <p class="u-lead">Wprowadź swoje obecne parametry i zobacz czarno na białym, jak dużo czasu i pieniędzy tracisz, nie korzystając ze sztucznej inteligencji.</p>
+
+        <div class="u-calc-box">
+          <div class="u-calc-title">Symulator Automatyzacji AI</div>
+          
+          <div class="u-calc-row">
+            <label>Twoja stawka godzinowa (lub wartość czasu): <span class="u-val" id="u-calc-rate-txt">80 zł</span></label>
+            <input type="range" class="u-calc-slider" id="u-calc-rate" min="20" max="250" value="80">
+          </div>
+
+          <div class="u-calc-row">
+            <label>Godziny tygodniowo spędzane na powtarzalnych zadaniach: <span class="u-val" id="u-calc-hours-txt">15h</span></label>
+            <input type="range" class="u-calc-slider" id="u-calc-hours" min="5" max="40" value="15">
+          </div>
+
+          <div class="u-calc-result">
+            <div class="u-calc-res-card">
+              <div class="u-calc-res-label">Czas odzyskany w miesiącu</div>
+              <div class="u-calc-res-value u-green" id="u-calc-res-time">30 godz.</div>
+            </div>
+            <div class="u-calc-res-card">
+              <div class="u-calc-res-label">Wartość uwolnionego czasu</div>
+              <div class="u-calc-res-value" id="u-calc-res-money">2 400 zł</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 BRUTAL TRUTHS -->
+    <section class="u-sec u-sec-dark u-reveal">
+      <div class="u-wrap">
+        <h2>3 BRUTALNE <span class="u-mark">PRAWDY</span></h2>
+        <p class="u-lead" style="font-style: italic;">Rewolucja AI to nie przejściowa moda. To głęboki i nieodwracalny reset dotychczasowych zasad gry.</p>
+
+        <div class="u-truth-grid">
+          <div class="u-truth-card" style="border-color: #ef4444;">
+            <div class="u-truth-ico">❌</div>
+            <div class="u-truth-title">PRAWDA #1</div>
+            <div class="u-truth-desc"><b>Za 3 lata 40% obecnych stanowisk pracy przestanie istnieć.</b> Kto nie nauczy się obsługi AI, zostanie bezpowrotnie zastąpiony.</div>
+          </div>
+          <div class="u-truth-card u-reveal u-delay-1" style="border-color: #ef4444;">
+            <div class="u-truth-ico">❌</div>
+            <div class="u-truth-title">PRAWDA #2</div>
+            <div class="u-truth-desc"><b>Przepaść finansowa: ludzie bez AI będą zarabiać o 70% mindre.</b> Klienci i pracodawcy wybiorą tych, którzy robią to samo 10x szybciej z pomocą botów.</div>
+          </div>
+          <div class="u-truth-card u-reveal u-delay-2" style="border-color: #ef4444;">
+            <div class="u-truth-ico">❌</div>
+            <div class="u-truth-title">PRAWDA #3</div>
+            <div class="u-truth-desc"><b>Twoja konkurencja już teraz uczy się automatyzacji.</b> Każdy dzień zwlekania to oddawanie pola i marginalizacja Twoich kompetencji.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="u-sec u-reveal">
+      <div class="u-wrap">
+        <h2>TAK ZMIENIAŁY SIĘ EPOKI NASZEJ CYWILIZACJI:</h2>
+        <p class="u-lead" style="font-style: italic;">Rewolucje technologiczne zdarzają się raz na całe życie. Kiedy nadchodzą, dzielą świat bezlitośnie.</p>
+
+        <div class="u-timeline">
+          <div class="u-time-card">
+            <div class="u-time-year">1760</div>
+            <div class="u-time-title">Rewolucja Przemysłowa</div>
+            <div class="u-time-desc">Kto nie zintegrował maszyn parowych w fabrykach, pozostał przy pracy ręcznej i stracił znaczenie.</div>
+          </div>
+          <div class="u-time-card u-reveal u-delay-1">
+            <div class="u-time-year">1990</div>
+            <div class="u-time-title">Era Internetu</div>
+            <div class="u-time-desc">Biznesy, które zignorowały sieć i cyfryzację, zostały wyparte przez nowoczesne, elastyczne podmioty.</div>
+          </div>
+          <div class="u-time-card u-time-active u-reveal u-delay-2">
+            <div class="u-time-year">2026</div>
+            <div class="u-time-title">Era AI</div>
+            <div class="u-time-desc">Ostatni reset zasad gry na naszych oczach. Sztuczna inteligencja staje się podstawą gospodarki i wolności.</div>
+            <div class="u-time-badge">TO DZIEJE SIĘ TERAZ!</div>
+          </div>
+        </div>
+
+        <div class="u-comp-grid">
+          <div class="u-comp-card u-comp-without">
+            <h3 class="u-comp-title">BEZ AI</h3>
+            <div class="u-comp-item">
+              <span class="u-comp-ico">❌</span>
+              <span>Spędzasz 8-10 godzin na nudnych, mechanicznych procesach.</span>
+            </div>
+            <div class="u-comp-item">
+              <span class="u-comp-ico">❌</span>
+              <span>Masz tylko jedno źródło dochodu, które zależy w 100% od Twojego czasu.</span>
+            </div>
+            <div class="u-comp-item">
+              <span class="u-comp-ico">❌</span>
+              <span>Szef lub rynek decyduje o Twoim czasie i zarobkach, stoisz w miejscu.</span>
+            </div>
+          </div>
+
+          <div class="u-comp-card u-comp-with">
+            <div class="u-comp-badge">TWOJA PRZYSZŁOŚĆ ⭐</div>
+            <h3 class="u-comp-title">Z AI</h3>
+            <div class="u-comp-item">
+              <span class="u-comp-ico">✅</span>
+              <span>Asystenci AI pracują dla Ciebie bez przerw, robiąc to w 15 minut.</span>
+            </div>
+            <div class="u-comp-item">
+              <span class="u-comp-ico">✅</span>
+              <span>Tworzysz pasywne strumienie dochodów i skalujesz biznes bez ludzi.</span>
+            </div>
+            <div class="u-comp-item">
+              <span class="u-comp-ico">✅</span>
+              <span>Ty dyrygujesz swoim życiem i czasem, zyskując pełną wolność finansową.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Badge 2 -->
+    <div class="u-action-zone-mid">
+      <div class="u-pulse-arrow">👇</div>
+      <div class="u-action-title">Zarezerwuj darmowe miejsce poniżej</div>
+      <div class="u-limit-badge-mid">⚡ Tylko 3 wolne miejsca na tę godzinę</div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION BUTTON #2 -->
+  <div class="u-btn-zone-solo">
+    <button class="u-btn-wow u-open-modal-trigger">REZERWUJĘ MIEJSCE NA SZKOLENIE</button>
+  </div>
+
+  <!-- LOWER ZONE: SYLABUS, FAQ, TESTIMONIALS -->
+  <div class="u-container-3">
+    <div class="u-action-footer-zone-k3">
+      <span>💻 Formuła online na żywo</span> • 
+      <span>⚡ Czysty konkret — bez lania wody</span>
+    </div>
+
+    <!-- SYLLABUS TABS -->
+    <section class="u-sec-k3 u-sec-k3-dark u-reveal">
+      <div class="u-wrap">
+        <h2>Co dokładnie zobaczysz podczas szkolenia</h2>
+        <p class="u-lead">90 minut czystego konkretu. Kliknij na poszczególne obszary poniżej, aby sprawdzić zagadnienia.</p>
+
+        <div class="u-tabs-header">
+          <button class="u-tab-btn u-active" onclick="uSelectTab(0)">💡 Podstawy &amp; Narzędzia</button>
+          <button class="u-tab-btn" onclick="uSelectTab(1)">⚡ Automatyzacja &amp; Prompty</button>
+          <button class="u-tab-btn" onclick="uSelectTab(2)">📝 Content &amp; Bezpieczeństwo</button>
+          <button class="u-tab-btn" onclick="uSelectTab(3)">🎨 Multimedia &amp; Strony</button>
+        </div>
+
+        <div class="u-tabs-content">
+          <div class="u-tab-panel u-active" id="u-panel-0">
+            <h3>🧠 Podstawy AI — Twoja Nowa Supermoc</h3>
+            <p class="u-panel-lead">Zrozumienie aktualnego rynku sztucznej inteligencji i dobór odpowiednich narzędzi pod Twoje potrzeby.</p>
+            <ul class="u-tab-list">
+              <li>Gdzie leżą największe pieniądze w automatyzacji AI i jak po nie sięgnąć jako pierwsza osoba w branży.</li>
+              <li>Mapa kluczowych asystentów: z których darmowych i płatnych aplikacji korzystać, a które omijać szerokim luźnym krokiem.</li>
+              <li>Architektura optymalnej pracy: jak zorganizować codzienne zadania z AI bez poczucia przytłoczenia.</li>
+            </ul>
+          </div>
+
+          <div class="u-tab-panel" id="u-panel-1">
+            <h3>⚡ Automatyzacja — Praca na Autopilocie</h3>
+            <p class="u-panel-lead">Tworzenie skutecznych instrukcji oraz łączenie systemów tak, by pracowały bez Twojej obecności.</p>
+            <ul class="u-tab-list">
+              <li>Inżynieria promptów (Prompt Engineering) — jak pisać polecenia, które dają natychmiastowe, profesjonalne rezultaty.</li>
+              <li>Automatyczne generowanie odpowiedzi, filtracja e-maili i asystenci obsługi klienta pracujący 24/7.</li>
+              <li>Przykłady prostych automatyzacji (Make/Zapier), które uwalniają do 10-15 godzin pracy w każdym tygodniu.</li>
+            </ul>
+          </div>
+
+          <div class="u-tab-panel" id="u-panel-2">
+            <h3>🛡️ Treści &amp; Zgodność z Prawem</h3>
+            <p class="u-panel-lead">Bezpieczne tworzenie tekstów, materiałów marketingowych oraz ochrona przed wyciekiem danych.</p>
+            <ul class="u-tab-list">
+              <li>Pisanie ofert sprzedażowych, artykułów, skryptów wideo na autopilocie z zachowaniem Twojego stylu.</li>
+              <li>Zasady bezpieczeństwa danych — jak zabezpieczyć się przed wyciekiem poufnych informacji i zachować pełną zgodność z RODO.</li>
+              <li>Jak legalnie wykorzystywać komercyjne wyniki generowane przez AI i unikać problemów z prawami autorskimi.</li>
+            </ul>
+          </div>
+
+          <div class="u-tab-panel" id="u-panel-3">
+            <h3>🖼️ Multimedia &amp; Witryny w 10 Minut</h3>
+            <p class="u-panel-lead">Szybkie tworzenie fotorealistycznych grafik, materiałów wideo, klonowanie głosu oraz stawianie stron internetowych.</p>
+            <ul class="u-tab-list">
+              <li>Kreowanie profesjonalnych grafik reklamowych bez pomocy drogich agencji czy grafików.</li>
+              <li>Tworzenie materiałów wideo i podkładów lektorskich opartych o zaawansowane modele generatywne.</li>
+              <li>Jak postawić działającą, responsywną stronę internetową i landing page przy użyciu sztucznej inteligencji.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAIN POINTS -->
+    <section class="u-sec-k3 u-reveal">
+      <div class="u-wrap">
+        <h2>Czy zauważasz to w swojej codzienności?</h2>
+        <p class="u-lead">Większość osób widzi rewolucję technologiczną, ale brakuje im drogowskazu, by zacząć z niej realnie korzystać.</p>
+        
+        <div class="u-card">
+          <ul class="u-clean u-pain">
+            <li>Spędzasz całe dnie na powtarzalnych, biurowych zadaniach, które wysysają z Ciebie energię.</li>
+            <li>Czujesz, że technologia AI rozwija się zbyt szybko i boisz się, że zostaniesz w tyle za konkurencją.</li>
+            <li>Próbowałeś już korzystać z ChatGPT, ale wyniki były przeciętne, sztuczne i bezużyteczne w praktyce.</li>
+            <li>Chcesz automatyzować swój biznes lub pracę, ale nie wiesz, jak postawić pierwszy, bezpieczny krok.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELIGIBILITY -->
+    <section class="u-sec-k3 u-sec-k3-dark u-reveal">
+      <div class="u-wrap">
+        <h2>Ten webinar jest dla Ciebie, jeśli…</h2>
+        <div class="u-card">
+          <ul class="u-clean u-qualify">
+            <li>Szukasz konkretnej wiedzy opartej na wdrożeniach ułatwiających codzienność, a nie teoretycznych prognozach.</li>
+            <li>Chcesz odzyskać cenny czas i zautomatyzować żmudną pracę bez konieczności nauki programowania.</li>
+            <li>Pragniesz wyprzedzić 95% rynku i zacząć traktować sztuczną inteligencję jako darmowego asystenta.</li>
+            <li>Chcesz budować nowoczesne, odporne na zawirowania rynkowe źródła wartości i korzyści finansowych.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRESENTER BIO -->
+    <section class="u-sec-k3 u-reveal">
+      <div class="u-wrap">
+        <h2>Kto poprowadzi szkolenie live</h2>
+        
+        <div class="u-host-wrap" style="margin-bottom: 24px;">
+          <img class="u-host-photo" src="https://transformacja90dni.pl/wp-content/uploads/2026/06/foto-2.jpg" alt="Krzysztof Król">
+          <div class="u-host-text">
+            <h3>Krzysztof Król</h3>
+            <div class="u-role">Międzynarodowy Ekspert Automatyzacji i Technologii AI</div>
+            <p>Przedsiębiorca z 25-letnim doświadczeniem w tworzeniu innowacyjnych biznesów i autor bestsellerów biznesowych. Od lat wdraża nowoczesne systemy sztucznej inteligencji, pomagając automatyzować procesy w firmach na całym świecie.</p>
+            <ul>
+              <li>Autor 9 książek wydanych nakładem Helion/Sensus — prawie 50 000 sprzedanych sztuk.</li>
+              <li>Doktorant Educational Psychology (California Coast University).</li>
+              <li>Od 2015 roku mieszka w Tajlandii na Phuket, skąd zdalnie zarządza projektami.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="u-gallery" style="grid-template-columns: 1fr; max-width: 480px; margin: 28px auto 0;">
+          <img class="u-gal-img" src="https://transformacja90dni.pl/wp-content/uploads/2026/06/foto-1.jpg" alt="Styl życia Phuket">
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF / REVIEWS -->
+    <section class="u-sec-k3 u-sec-k3-dark u-reveal">
+      <div class="u-wrap">
+        <h2>Dołącz do tysięcy uczestników</h2>
+        <p class="u-lead">Ludzie, którzy wdrożyli te proste nawyki automatyzacji, zmienili swoją efektywność i zyskali pełną kontrolę nad czasem.</p>
+        
+        <div class="u-stats-bar">
+          <div class="u-stat-box">
+            <div class="u-num">1300+</div>
+            <div class="u-lab">przeszkolonych uczestników</div>
+          </div>
+          <div class="u-stat-box u-reveal u-delay-1">
+            <div class="u-num">100+</div>
+            <div class="u-lab">zautomatyzowanych procesów</div>
+          </div>
+          <div class="u-stat-box u-reveal u-delay-2">
+            <div class="u-num" style="color: var(--u-teal);">90 minut</div>
+            <div class="u-lab">czystej wiedzy bez lania wody</div>
+          </div>
+        </div>
+
+        <div class="u-quotes">
+          <div class="u-quote">
+            <div class="u-stars">★★★★★</div>
+            <p>„Zautomatyzowałem 70% powtarzalnych raportów i grafiki w mojej agencji. Oszczędzam 12 godzin tygodniowo, a jakość pracy poszybowała do góry.”</p>
+            <div class="u-who">— Michał K. <span>(Przedsiębiorca, 34 lata)</span></div>
+          </div>
+          <div class="u-quote u-reveal u-delay-1">
+            <div class="u-stars">★★★★★</div>
+            <p>„Praca z tekstami i mailami zajmowała mi całe wieczory. Dzięki precyzyjnym promptom Krzysztofa Króla robię to w 20 minut z kubkiem kawy.”</p>
+            <div class="u-who">— Anna W. <span>(Freelancerka, 29 lat)</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="u-sec-k3 u-faq u-reveal">
+      <div class="u-wrap">
+        <h2>Najczęstsze pytania</h2>
+
+        <details>
+          <summary>Czy to szkolenie na pewno jest darmowe?</summary>
+          <p>Tak. Udział w transmisji na żywo oraz materiały prezentowane w trakcie webinaru są w 100% bezpłatne. Wystarczy zarejestrować się przez przycisk zapisu.</p>
+        </details>
+
+        <details>
+          <summary>Czy poradzę sobie, jeśli jestem zupełnie początkujący w AI?</summary>
+          <p>Jak najbardziej. Szkolenie zostało zaprojektowane prostym, ludzkim językiem bez zbędnego żargonu programistycznego. Skupiamy się na klikalnych, darmowych narzędziach, które wdrożysz w 10-15 minut.</p>
+        </details>
+
+        <details>
+          <summary>Co jest potrzebne, aby wziąć udział?</summary>
+          <p>Wystarczy komputer, tablet lub telefon z dostępem do internetu. Link do transmisji oraz instrukcje techniczne otrzymasz mailowo zaraz po rejestracji.</p>
+        </details>
+
+        <details>
+          <summary>Czy otrzymaam nagranie, jeśli spóźnię się na transmisję?</summary>
+          <p>Transmisja odbywa się w formule na żywo. Informacje o ewentualnym dostępie do powtórek przekażemy drogą mailową wyłącznie zarejestrowanym osobom.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Action indicator 3 -->
+    <div class="u-action-zone-bottom">
+      <div class="u-pulse-arrow">👇</div>
+      <div class="u-action-title">TO TWÓJ OSTATNI KROK DO ZMIANY</div>
+      <div class="u-action-sub">Skorzystaj z formularza poniżej lub kliknij przycisk, aby zarezerwować darmowe miejsce:</div>
+      <div class="u-social-proof-small">Dołączyło już ponad <b>12 450</b> osób!</div>
+    </div>
+  </div>
+
+  <!-- FOOTER & INLINE REGISTRATION SECTION -->
+  <div class="u-container-4">
+    <div class="u-action-footer-zone-k4">
+      <span>🔒 Rejestracja szyfrowana SSL</span> • 
+      <span>🛡️ Zgodność z wymogami RODO</span> • 
+      <span>🎁 E-book PDF w prezencie</span>
+    </div>
+
+    <!-- INLINE REGISTRATION FORM -->
+    <section class="u-inline-register-sec u-reveal" id="u-bottom-form-anchor">
+      <div class="u-wrap">
+        <div class="u-form-premium">
+          <h2>Rezerwacja Miejsca</h2>
+          <p class="u-form-lead">Zarezerwuj darmowy bilet na szkolenie online w 30 sekund.</p>
+
+          <form class="u-signup-form-element" novalidate>
+            <div class="u-form-error">Uzupełnij imię, poprawny adres e-mail i zaakceptuj zgodę.</div>
+            
+            <div class="u-fld-group">
+              <input type="text" class="u-fld-input u-input-name" placeholder=" " required autocomplete="given-name">
+              <label class="u-fld-label">Twoje Imię</label>
+            </div>
+
+            <div class="u-fld-group">
+              <input type="email" class="u-fld-input u-input-email" placeholder=" " required autocomplete="email">
+              <label class="u-fld-label">Adres E-mail</label>
+            </div>
+
+            <label class="u-consent-container">
+              <input type="checkbox" class="u-consent-checkbox u-input-consent" required>
+              <div class="u-consent-custom-box"></div>
+              <span>Wyrażam zgodę na otrzymywanie materiałów szkoleniowych oraz newslettera. Administratorem danych jest organizator projektu. Szczegóły w <a href="https://twojainteligencja.elms.pl/next/public/pages/privacy_policy" target="_blank" rel="noopener">Polityce Prywatności</a>. *</span>
+            </label>
+
+            <button type="submit" class="u-btn-wow gold" style="max-width: 100%;">
+              <span class="u-form-btn-text">BIERZĘ UDZIAŁ W SZKOLENIU — BEZPŁATNIE 🔥</span>
+            </button>
+          </form>
+
+          <div class="u-form-success-screen">
+            <div class="u-success-circle">
+              <div class="u-success-icon">✓</div>
+            </div>
+            <h3>System przyjął zgłoszenie!</h3>
+            <p>Gratulacje! Sprawdź skrzynkę e-mail za 2 minuty, wysłaliśmy link do webinaru.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER PANEL -->
+    <footer class="u-footer-zone">
+      <div class="u-footer-logo">AI BIZNES WOLNOŚĆ</div>
+      <div class="u-footer-sub">Ostatni reset zasad gry cywilizacji.</div>
+      
+      <div class="u-footer-links">
+        <a href="https://twojainteligencja.elms.pl/next/public/pages/regulations?locale=pl" target="_blank" rel="noopener">Regulamin</a>
+        <a href="https://twojainteligencja.elms.pl/next/public/pages/privacy_policy" target="_blank" rel="noopener">Polityka prywatności</a>
+      </div>
+      
+      <div class="u-copyright">
+        © <span id="u-yr-k4">2026</span> AI BIZNES WOLNOŚĆ. Wszelkie prawa zastrzeżone.
+      </div>
+    </footer>
+  </div>
+
+  <!-- PORTAL MODAL SYSTEM -->
+  <div class="u-modal-portal" id="u-register-modal">
+    <div class="u-modal-card">
+      <div class="u-form-premium">
+        <div class="u-modal-close-btn" id="u-modal-close">&times;</div>
+        
+        <h2>Zarezerwuj Miejsce</h2>
+        <p class="u-form-lead">Zostaw imię i e-mail, aby natychmiast otrzymać link do transmisji live.</p>
+
+        <form class="u-signup-form-element" novalidate>
+          <div class="u-form-error">Uzupełnij imię, poprawny adres e-mail i zaakceptuj zgodę.</div>
+          
+          <div class="u-fld-group">
+            <input type="text" class="u-fld-input u-input-name" placeholder=" " required autocomplete="given-name">
+            <label class="u-fld-label">Twoje Imię</label>
+          </div>
+
+          <div class="u-fld-group">
+            <input type="email" class="u-fld-input u-input-email" placeholder=" " required autocomplete="email">
+            <label class="u-fld-label">Adres E-mail</label>
+          </div>
+
+          <label class="u-consent-container">
+            <input type="checkbox" class="u-consent-checkbox u-input-consent" required>
+            <div class="u-consent-custom-box"></div>
+            <span>Wyrażam zgodę na otrzymywanie materiałów szkoleniowych oraz newslettera. Szczegóły w <a href="https://twojainteligencja.elms.pl/next/public/pages/privacy_policy" target="_blank" rel="noopener">Polityce Prywatności</a>. *</span>
+          </label>
+
+          <button type="submit" class="u-btn-wow" style="max-width: 100%;">
+            <span class="u-form-btn-text">ZAPISZ MNIE NA WEBINAR ZA DARMO 🔥</span>
+          </button>
+        </form>
+
+        <div class="u-form-success-screen">
+          <div class="u-success-circle">
+            <div class="u-success-icon">✓</div>
+          </div>
+          <h3>Dziękujemy! Jesteś na liście.</h3>
+          <p>Link do spotkania wysłaliśmy na Twój adres e-mail. Sprawdź skrzynkę (również folder Spam/Oferty)!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+  (function(){
+    "use strict";
+    
+    function initW90aiHero(){
+      var root = document.querySelector('.u-container-1');
+      if(!root) return;
+
+      var stickyHeader = document.getElementById('u-sticky-header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) { stickyHeader.classList.add('u-visible'); } 
+        else { stickyHeader.classList.remove('u-visible'); }
+      });
+
+      // Canvas Matrix rain effect background
+      var canvas = root.querySelector('#u-neural-net');
+      if(canvas) {
+        var ctx = canvas.getContext('2d');
+        var matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*";
+        matrix = matrix.split("");
+        var font_size = 10;
+        var columns = 0;
+        var drops = [];
+
+        function resize() {
+          canvas.width = canvas.parentElement.offsetWidth;
+          canvas.height = canvas.parentElement.offsetHeight;
+          columns = canvas.width / font_size;
+          drops = [];
+          for (var x = 0; x < columns; x++) { drops[x] = 1; }
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function draw() {
+          ctx.fillStyle = "rgba(5, 5, 10, 0.08)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "rgba(0, 255, 204, 0.35)"; // green-cyan text
+          ctx.font = font_size + "px Orbitron";
+
+          for (var i = 0; i < drops.length; i++) {
+            var text = matrix[Math.floor(Math.random() * matrix.length)];
+            ctx.fillText(text, i * font_size, drops[i] * font_size);
+            if (drops[i] * font_size > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i]++;
+          }
+        }
+        setInterval(draw, 33);
+      }
+
+      // Countdown Timer
+      var elD = root.querySelector('#u-cd-d'), elH = root.querySelector('#u-cd-h'),
+          elM = root.querySelector('#u-cd-m'), elS = root.querySelector('#u-cd-s'),
+          box = root.querySelector('#u-countdown'), dateSpan = root.querySelector('#u-webinar-date');
+      var monthNames = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
+      
+      function getWarsawTime(now) {
+        if (typeof Intl === 'undefined' || !Intl.DateTimeFormat) {
+          return { date: now, dayOfWeek: now.getDay(), year: now.getFullYear(), month: now.getMonth(), day: now.getDate(), hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds() };
+        }
+        try {
+          var formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Warsaw', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+          var parts = {};
+          formatter.formatToParts(now).forEach(function(p) { if (p.type !== 'literal') parts[p.type] = parseInt(p.value, 10); });
+          var warsawDate = new Date(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+          var weekdayFormatter = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Warsaw', weekday: 'short' });
+          var weekdayStr = weekdayFormatter.format(now);
+          var weekdays = { 'Sun': 0, 'Mon': 1, 'Tue': 2, 'Wed': 3, 'Thu': 4, 'Fri': 5, 'Sat': 6 };
+          var dayOfWeek = weekdays[weekdayStr];
+          if (typeof dayOfWeek === 'undefined') dayOfWeek = warsawDate.getDay();
+          return { date: warsawDate, dayOfWeek: dayOfWeek, year: parts.year, month: parts.month - 1, day: parts.day, hour: parts.hour, minute: parts.minute, second: parts.second };
+        } catch (e) {
+          return { date: now, dayOfWeek: now.getDay(), year: now.getFullYear(), month: now.getMonth(), day: now.getDate(), hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds() };
+        }
+      }
+      
+      function tick(){
+        var now = new Date();
+        var w = getWarsawTime(now);
+        var daysToAdd = 7 - w.dayOfWeek;
+        if (w.dayOfWeek === 0 && w.hour < 10) daysToAdd = 0;
+        var targetWarsawDate = new Date(w.year, w.month, w.day);
+        targetWarsawDate.setDate(w.day + daysToAdd);
+        targetWarsawDate.setHours(10, 0, 0, 0);
+        
+        if (dateSpan) {
+          var dayStr = targetWarsawDate.getDate();
+          var monthStr = monthNames[targetWarsawDate.getMonth()];
+          dateSpan.textContent = "📅 Niedziela, " + dayStr + " " + monthStr + " o godz. 10:00";
+        }
+        var diff = targetWarsawDate.getTime() - w.date.getTime();
+        if(box) box.style.display='flex';
+        var s = Math.floor(diff/1000);
+        if (s < 0) s = 0;
+        
+        var days = Math.floor(s/86400);
+        var pad = function(n){return (n<10?'0':'')+n;};
+        var hrs = pad(Math.floor((s%86400)/3600));
+        var mins = pad(Math.floor((s%3600)/60));
+        var secs = pad(s%60);
+
+        if(elD) elD.textContent = days;
+        if(elH) elH.textContent = hrs;
+        if(elM) elM.textContent = mins;
+        if(elS) elS.textContent = secs;
+
+        var elStickyTimer = document.getElementById('u-sticky-timer');
+        if (elStickyTimer) {
+          elStickyTimer.textContent = days + "d " + hrs + "h " + mins + "m " + secs + "s";
+        }
+      }
+      setInterval(tick, 1000);
+      tick();
+
+      // Live viewers
+      var liveSpan = root.querySelector('#u-live-count');
+      if (liveSpan) {
+        var currentViewers = Math.floor(Math.random() * (243 - 201 + 1)) + 201;
+        function updateLiveViewers() {
+          var diff = Math.floor(Math.random() * 5) - 2;
+          currentViewers += diff;
+          if (currentViewers < 201) currentViewers = 201;
+          if (currentViewers > 243) currentViewers = 243;
+          liveSpan.textContent = currentViewers;
+        }
+        setInterval(updateLiveViewers, 3000);
+        updateLiveViewers();
+      }
+
+      // Remaining seats
+      var limitSpan = root.querySelector('#u-limit-count-1');
+      if (limitSpan) {
+        var currentLimit = 42;
+        function updateLimit() {
+          if (currentLimit > 8) {
+            currentLimit -= Math.floor(Math.random() * 3) + 1;
+            if (currentLimit < 8) currentLimit = 8;
+            limitSpan.textContent = currentLimit;
+          } else {
+            limitSpan.textContent = Math.floor(Math.random() * 4) + 5;
+          }
+        }
+        setInterval(updateLimit, 12000);
+      }
+    }
+
+    function initW90aiTresc(){
+      var root = document.querySelector('.u-container-2');
+      if(!root) return;
+
+      var sliderRate = root.querySelector('#u-calc-rate');
+      var sliderHours = root.querySelector('#u-calc-hours');
+      var txtRate = root.querySelector('#u-calc-rate-txt');
+      var txtHours = root.querySelector('#u-calc-hours-txt');
+      var resTime = root.querySelector('#u-calc-res-time');
+      var resMoney = root.querySelector('#u-calc-res-money');
+      
+      if (sliderRate && sliderHours) {
+        var currentValTime = 0;
+        var currentValMoney = 0;
+        
+        var countUp = function(element, start, end, suffix, isMoney) {
+          var steps = 15;
+          var step = 0;
+          var increment = (end - start) / steps;
+          element.classList.remove('u-pulse-num');
+          void element.offsetWidth;
+          element.classList.add('u-pulse-num');
+          
+          var timer = setInterval(function() {
+            start += increment;
+            step++;
+            if (step >= steps) {
+              clearInterval(timer);
+              start = end;
+            }
+            if (isMoney) {
+              element.textContent = Math.round(start).toLocaleString('pl-PL') + suffix;
+            } else {
+              element.textContent = Math.round(start) + suffix;
+            }
+          }, 15);
+        };
+        
+        var update = function() {
+          var rate = parseInt(sliderRate.value, 10);
+          var hours = parseInt(sliderHours.value, 10);
+          txtRate.textContent = rate + " zł";
+          txtHours.textContent = hours + "h";
+          
+          var ratePct = ((rate - 20) / (250 - 20)) * 100;
+          var hoursPct = ((hours - 5) / (40 - 5)) * 100;
+          sliderRate.style.background = 'linear-gradient(to right, var(--u-accent) ' + ratePct + '%, rgba(255,255,255,0.05) ' + ratePct + '%)';
+          sliderHours.style.background = 'linear-gradient(to right, var(--u-accent) ' + hoursPct + '%, rgba(255,255,255,0.05) ' + hoursPct + '%)';
+          
+          var monthlyHoursSaved = Math.round(hours * 4.33 * 0.5);
+          var monthlyMoneySaved = monthlyHoursSaved * rate;
+          countUp(resTime, currentValTime, monthlyHoursSaved, " godz.", false);
+          countUp(resMoney, currentValMoney, monthlyMoneySaved, " zł", true);
+          currentValTime = monthlyHoursSaved;
+          currentValMoney = monthlyMoneySaved;
+        };
+        sliderRate.addEventListener('input', update);
+        sliderHours.addEventListener('input', update);
+        update();
+      }
+
+      var elDigits = root.querySelector('#u-timer-under-btn');
+      var elBar = root.querySelector('#u-timer-progress-bar');
+      if (elDigits) {
+        var duration = 15 * 60;
+        var savedStart = sessionStorage.getItem('u_session_start_cyber');
+        var now = Math.floor(Date.now() / 1000);
+        
+        if (!savedStart) {
+          sessionStorage.setItem('u_session_start_cyber', now);
+          savedStart = now;
+        }
+        var elapsed = now - parseInt(savedStart, 10);
+        var remaining = duration - (elapsed % duration);
+        
+        function tickSession() {
+          var m = Math.floor(remaining / 60);
+          var s = remaining % 60;
+          var mStr = m < 10 ? '0' + m : m;
+          var sStr = s < 10 ? '0' + s : s;
+          elDigits.textContent = mStr + ":" + sStr;
+          if (elBar) { elBar.style.width = ((remaining / duration) * 100) + '%'; }
+          if (remaining > 0) { remaining--; } 
+          else { remaining = duration; sessionStorage.setItem('u_session_start_cyber', Math.floor(Date.now() / 1000)); }
+        }
+        setInterval(tickSession, 1000);
+        tickSession();
+      }
+
+      var targets = root.querySelectorAll('.u-reveal');
+      if (targets.length && typeof IntersectionObserver !== 'undefined') {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('u-visible'); observer.unobserve(entry.target); }
+          });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        targets.forEach(function(el) { observer.observe(el); });
+      } else { targets.forEach(function(el) { el.classList.add('u-visible'); }); }
+    }
+
+    function initW90aiAutorytet(){
+      var root = document.querySelector('.u-container-3');
+      if(!root) return;
+
+      window.uSelectTab = function(index) {
+        var buttons = root.querySelectorAll('.u-tab-btn');
+        var panels = root.querySelectorAll('.u-tab-panel');
+        buttons.forEach(function(btn, i) {
+          if (i === index) btn.classList.add('u-active');
+          else btn.classList.remove('u-active');
+        });
+        panels.forEach(function(panel, i) {
+          if (i === index) panel.classList.add('u-active');
+          else panel.classList.remove('u-active');
+        });
+      };
+
+      var targets = root.querySelectorAll('.u-reveal');
+      if (targets.length && typeof IntersectionObserver !== 'undefined') {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('u-visible'); observer.unobserve(entry.target); }
+          });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        targets.forEach(function(el) { observer.observe(el); });
+      } else { targets.forEach(function(el) { el.classList.add('u-visible'); }); }
+    }
+
+    function initW90aiFooter(){
+      var root = document.querySelector('.u-container-4');
+      if(!root) return;
+      var yr = root.querySelector('#u-yr-k4');
+      if(yr) yr.textContent = new Date().getFullYear();
+
+      var targets = root.querySelectorAll('.u-reveal');
+      if (targets.length && typeof IntersectionObserver !== 'undefined') {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('u-visible'); observer.unobserve(entry.target); }
+          });
+        }, { threshold: 0.1 });
+        targets.forEach(function(el) { observer.observe(el); });
+      }
+    }
+
+    function initModalPortalSystem() {
+      var modal = document.getElementById('u-register-modal');
+      var closeBtn = document.getElementById('u-modal-close');
+      var triggers = document.querySelectorAll('.u-open-modal-trigger');
+
+      triggers.forEach(function(trigger) {
+        trigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          modal.classList.add('u-open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeModal() { modal.classList.remove('u-open'); document.body.style.overflow = ''; }
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) { if (e.target === modal) { closeModal(); } });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && modal.classList.contains('u-open')) { closeModal(); } });
+    }
+
+    function initFormElements() {
+      var forms = document.querySelectorAll('.u-signup-form-element');
+      forms.forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var nameInput = form.querySelector('.u-input-name');
+          var emailInput = form.querySelector('.u-input-email');
+          var consentInput = form.querySelector('.u-input-consent');
+          var errorDiv = form.querySelector('.u-form-error');
+          var submitBtn = form.querySelector('button[type="submit"]');
+
+          var name = nameInput.value.trim();
+          var email = emailInput.value.trim();
+          var isConsent = consentInput.checked;
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          if (name.length < 2 || !emailRegex.test(email) || !isConsent) {
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+
+          errorDiv.style.display = 'none';
+          submitBtn.disabled = true;
+          submitBtn.style.cursor = 'not-allowed';
+          submitBtn.innerHTML = `<div class="u-form-submit-state"><div class="u-form-loader"></div><span>SYNCHRONIZACJA...</span></div>`;
+
+          setTimeout(function() {
+            form.style.display = 'none';
+            var successScreen = form.parentElement.querySelector('.u-form-success-screen');
+            if (successScreen) { successScreen.style.display = 'block'; }
+          }, 1800);
+        });
+      });
+    }
+
+    function initAll() {
+      initW90aiHero();
+      initW90aiTresc();
+      initW90aiAutorytet();
+      initW90aiFooter();
+      initModalPortalSystem();
+      initFormElements();
+    }
+
+    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', initAll); } 
+    else { initAll(); }
+  })();
+  </script>
+</body>
+</html>
